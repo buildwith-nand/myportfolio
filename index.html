@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       PAGE TITLE
+       ============================================================ -->
+  <title>Nand Kumar Sahu · Data Engineer Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome (icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES — tweak colours here and they update everywhere
+       ============================================================ */
+    :root {
+      --accent:       #5e81ac;
+      --accent-dark:  #4a6a93;
+      --accent-light: #d8e4f0;
+      --text:         #2d2d2d;
+      --text-muted:   #6b7280;
+      --bg:           #ffffff;
+      --sidebar-bg:   #1e2a3a;
+      --sidebar-text: #c8d8e8;
+      --card-bg:      #f8fafd;
+      --border:       #e2e8f0;
+      --sidebar-w:    300px;
+      --header-h:     60px;
+      --font-sans:    'Source Sans 3', sans-serif;
+      --font-serif:   'Source Serif 4', serif;
+      --radius:       10px;
+      --shadow:       0 4px 20px rgba(94,129,172,.12);
+      --shadow-lg:    0 8px 40px rgba(94,129,172,.18);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-dark); }
+    img { display: block; max-width: 100%; }
+
+    /* ============================================================
+       SIDEBAR
+       ============================================================ */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 2rem;
+      z-index: 200;
+      overflow-y: auto;
+      transition: transform .35s ease;
+    }
+
+    /* ── Sidebar logo / name ── */
+    #sidebar .brand { margin-bottom: 2.5rem; }
+    #sidebar .brand h1 {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+    }
+    #sidebar .brand p {
+      font-size: .82rem;
+      font-weight: 300;
+      color: #8fa8c8;
+      margin-top: .35rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* ── Nav links ── */
+    #sidebar nav { flex: 1; }
+    #sidebar nav ul { list-style: none; }
+    #sidebar nav ul li + li { margin-top: .25rem; }
+    #sidebar nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .65rem .9rem;
+      border-radius: 7px;
+      color: var(--sidebar-text);
+      font-size: .95rem;
+      font-weight: 400;
+      transition: background .2s, color .2s;
+    }
+    #sidebar nav ul li a:hover,
+    #sidebar nav ul li a.active {
+      background: rgba(94,129,172,.25);
+      color: #fff;
+    }
+    #sidebar nav ul li a i { width: 18px; text-align: center; font-size: .9rem; color: #8fa8c8; }
+
+    /* ── Sidebar social icons ── */
+    #sidebar .sidebar-social {
+      display: flex;
+      gap: .8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    #sidebar .sidebar-social a {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.07);
+      color: #8fa8c8;
+      display: grid; place-items: center;
+      font-size: .85rem;
+      transition: background .2s, color .2s;
+    }
+    #sidebar .sidebar-social a:hover { background: var(--accent); color: #fff; }
+
+    /* ============================================================
+       HEADER BAR
+       ============================================================ */
+    #header {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      height: var(--header-h);
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+      box-shadow: 0 1px 10px rgba(0,0,0,.05);
+    }
+    #header .logo {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .01em;
+    }
+    #header .header-social { display: flex; gap: .6rem; }
+    #header .header-social a {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      display: grid; place-items: center;
+      font-size: .8rem;
+      transition: border-color .2s, color .2s;
+    }
+    #header .header-social a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* hamburger (mobile only) */
+    #menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       MAIN CONTENT WRAPPER
+       ============================================================ */
+    #wrapper {
+      margin-left: var(--sidebar-w);
+      padding-top: var(--header-h);
+      min-height: 100vh;
+    }
+
+    /* ── Section base ── */
+    section { padding: 5rem 3.5rem; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    h2.section-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 1.25;
+    }
+
+    /* ============================================================
+       BANNER / HERO SECTION
+       ============================================================ */
+    #banner {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      background: linear-gradient(135deg, #f0f5fb 0%, #ffffff 100%);
+      padding: 5.5rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #banner::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .banner-text { flex: 1; }
+    .banner-text .greeting {
+      font-size: .85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+    .banner-text h1 {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .banner-text h1 span { color: var(--accent); }
+    .banner-text .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .badge {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+      letter-spacing: .04em;
+    }
+    .banner-text p.bio {
+      font-size: 1rem;
+      color: #4a5568;
+      line-height: 1.8;
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .75rem 1.75rem;
+      border-radius: 7px;
+      font-family: var(--font-sans);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(94,129,172,.35);
+    }
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(94,129,172,.45);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .banner-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── Profile photo ── */
+    .banner-photo { flex-shrink: 0; }
+    .photo-wrap {
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #fff;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      background: var(--accent-light);
+    }
+    .photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    /* Placeholder shown when no real photo is used */
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: var(--accent);
+    }
+    .photo-placeholder i { font-size: 4rem; opacity: .4; }
+    .photo-placeholder span { font-size: .75rem; font-weight: 600; text-align: center; opacity: .6; padding: 0 1rem; }
+
+    /* ============================================================
+       ABOUT SECTION
+       ============================================================ */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-intro p { color: #4a5568; line-height: 1.85; margin-bottom: 1rem; }
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1.5rem;
+    }
+    .skill-tag {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .3rem .85rem;
+      border-radius: 20px;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: box-shadow .2s;
+    }
+    .stat-card:hover { box-shadow: var(--shadow); }
+    .stat-card .stat-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: grid; place-items: center;
+      margin: 0 auto .75rem;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+    .stat-card .stat-label {
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .stat-card .stat-value {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: .25rem;
+    }
+
+    /* ============================================================
+   CERTIFICATIONS
+   ============================================================ */
+
+#certifications {
+  background: #f8fafd;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.cert-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  transition: all .25s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+
+.cert-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cert-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.cert-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
+
+.cert-org {
+  color: var(--accent);
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: .75rem;
+}
+
+.cert-desc {
+  color: var(--text-muted);
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+    /* ============================================================
+       PROJECTS SECTION
+       ============================================================ */
+    #projects { background: #ffffff; }
+    .projects-intro {
+      max-width: 580px;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      font-size: .97rem;
+    }
+
+    /* ── 3-column card grid ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    /* ============================================================
+       PROJECT CARD — HOW TO DUPLICATE:
+       Copy everything from <!-- PROJECT CARD START --> to
+       <!-- PROJECT CARD END --> and paste it right after the
+       closing </article> of the last card. Then update the
+       placeholder image, title, description, and project link.
+       ============================================================ */
+    .project-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--accent-light);
+    }
+    /* Image placeholder shown when no real screenshot is used */
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--accent-light) 0%, #c8daf0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: var(--accent);
+    }
+    .card-img-placeholder i { font-size: 2.5rem; opacity: .5; }
+    .card-img-placeholder span { font-size: .75rem; font-weight: 600; opacity: .6; }
+
+    .card-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }
+    .card-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .75rem; }
+    .card-tag {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: .15rem .6rem;
+      border-radius: 4px;
+    }
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: .5rem;
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: .88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+      margin-bottom: 1.2rem;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+      border-radius: 6px;
+      padding: .45rem 1rem;
+      align-self: flex-start;
+      transition: all .2s;
+    }
+    .card-link:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card-link i { font-size: .75rem; }
+
+    /* ============================================================
+       CONTACT SECTION
+       ============================================================ */
+
+  #contact { background: #f8fafd;}
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: .5rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: box-shadow .2s;
+    }
+    .contact-item:hover { box-shadow: var(--shadow); }
+    .contact-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--accent);
+      border-radius: 10px;
+      display: grid; place-items: center;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .contact-info .label {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text-muted);
+      margin-bottom: .2rem;
+    }
+    .contact-info .value {
+      font-size: .95rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .contact-info .value a { color: var(--accent); }
+    .contact-info .value a:hover { color: var(--accent-dark); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      background: var(--sidebar-bg);
+      color: #8fa8c8;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: .85rem;
+    }
+    footer span { color: var(--accent); font-weight: 600; }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+      #about .about-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 280px; }
+
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
+
+      #wrapper { margin-left: 0; }
+      #header { left: 0; }
+      #menu-toggle { display: block; }
+
+      section { padding: 3.5rem 1.5rem; }
+      #banner { flex-direction: column-reverse; padding: 3.5rem 1.5rem; gap: 2rem; }
+      .banner-text h1 { font-size: 2rem; }
+      .photo-wrap { width: 160px; height: 160px; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+      #contact .contact-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* overlay for mobile menu */
+    #overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 150;
+    }
+    #overlay.visible { display: block; }
+
+    /* scroll animation helper */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR — update your name, job title, and nav links here
+     ============================================================ -->
+<aside id="sidebar">
+  <div class="brand">
+    <!-- CHANGE: Replace with your own name -->
+    <h1>Nand Kumar</h1>
+    <!-- CHANGE: Replace with your job title -->
+    <p>Data Engineer</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="#banner"   class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="#about"    class="nav-link"><i class="fa-solid fa-user"></i> About</a></li>
+      <li><a href="#certifications"  class="nav-link"><i class="fa-solid fa-certificate"></i>Certifications</a></li>
+      <li><a href="#projects" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Projects</a></li>
+      <li><a href="#contact"  class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHANGE: Update the href values with your real social profile URLs -->
+  <div class="sidebar-social">
+    <a href="https://www.linkedin.com/in/nandkumar-sahu/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="mailto:nandkumarsh222@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://github.com/nandbabai" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+  </div>
+</aside>
+
+<!-- Mobile overlay (closes sidebar when tapped) -->
+<div id="overlay"></div>
+
+<!-- ============================================================
+     HEADER BAR
+     ============================================================ -->
+<header id="header">
+  <!-- Hamburger button — visible on mobile only -->
+  <button id="menu-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+
+  <!-- CHANGE: Update the logo text if you like -->
+  <div class="logo">Portfolio</div>
+
+  <!-- CHANGE: Same social links as the sidebar -->
+  <div class="header-social">
+    <a href="https://www.linkedin.com/in/nandkumar-sahu/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="mailto:nandkumarsh222@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://github.com/nandbabai" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div id="wrapper">
+
+  <!-- ============================================================
+       BANNER / HERO SECTION
+       ============================================================ -->
+  <section id="banner">
+    <div class="banner-text fade-in">
+      <p class="greeting">Welcome to my portfolio</p>
+
+      <h1>Hi, I'm <span>Nand Kumar Sahu</span></h1>
+
+      <div class="subtitle">
+        <span class="badge"><i class="fa-solid fa-snowflake" style="margin-right:.35rem"></i>Snowflake</span>
+        <span class="badge"><i class="fa-solid fa-hammer" style="margin-right:.35rem"></i>Dbt</span>
+        <span class="badge"><i class="fa-solid fa-database" style="margin-right:.35rem"></i>Oracle</span>
+        <span class="badge"><i class="fa-brands fa-python" style="margin-right:.35rem"></i>Python</span>
+        <span class="badge"><i class="fa-solid fa-cog" style="margin-right:.35rem"></i>Kafka</span>
+        <span class="badge"><i class="fa-solid fa-gear" style="margin-right:.35rem"></i>Airflow</span>
+
+      </div>
+
+      <p class="bio">
+      Experienced Data Engineer specialising in Snowflake, dbt, Oracle, Python, Kafka, Airflow and enterprise data platforms. Building scalable, high-performance data solutions for banking and financial services.
+      </p>
+
+      <div class="banner-btns">
+        <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-chart-bar"></i> View My Work</a>
+        <a href="#contact"  class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="banner-photo fade-in" style="animation-delay:.15s">
+      <div class="photo-wrap">
+        <img src="nand.jpg" alt="Photo" />
+        -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT SECTION
+       ============================================================ -->
+  <section id="about">
+    <span class="section-label">About Me</span>
+    <h2 class="section-title">Turning data into decisions</h2>
+
+    <div class="about-grid">
+      <div class="about-intro fade-in">
+        <!-- CHANGE: Update this paragraph with your own story -->
+        </p>
+        I am a Data Engineer based in Oslo, passionate about building robust, scalable, and cost-effective data infrastructure. I am specialize in architecting end-to-end ETL/ELT pipelines, optimizing data warehouses, and ensuring high data reliability. 
+        </p>
+
+         </p>
+        I bridge the gap between raw data and actionable business intelligence, utilizing data cloud platform like Snowflake and tools like Apache Airflow, dbt, Elementary etc. Outside of writing clean code, I enjoy Strength Training & Weightlifting, Marathon Running, and keeping up with the latest trends in distributed data architectures. 
+         </p>
+
+        <div class="skills-list">
+          <span class="skill-tag">Snowflake</span>
+          <span class="skill-tag">Oracle</span>
+          <span class="skill-tag">Postgress</span>
+          <span class="skill-tag">Dbt</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">ETL/ELT</span>
+          <span class="skill-tag">Airflow</span>
+          <span class="skill-tag">Kafka</span>
+          <span class="skill-tag">AWS/AZURE</span>
+          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">CI/CD</span>
+          <span class="skill-tag">Streamlit</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Data Modelling</span>
+          <span class="skill-tag">Data Quality & Governance</span>
+        </div>
+      </div>
+
+
+      <div class="about-stats fade-in" style="animation-delay:.1s">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="stat-label">Experience</div>
+          <div class="stat-value">14+ Years</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div>
+          <div class="stat-label">Projects</div>
+          <div class="stat-value">10+</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-database"></i></div>
+          <div class="stat-label">Tools Mastered</div>
+          <div class="stat-value">4+</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-handshake"></i></div>
+          <div class="stat-label">Availability</div>
+          <div class="stat-value">Open to Work</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+
+  <span class="section-label">Certifications</span>
+
+  <h2 class="section-title">
+    Professional Certifications
+  </h2>
+
+  <p class="projects-intro">
+    Continuous learning and certification are an important part of my professional journey,
+    ensuring I stay current with modern data engineering, cloud technologies and analytics platforms.
+  </p>
+
+  <div class="cert-grid">
+
+    <div class="cert-card fade-in">
+      <div class="cert-icon">
+        <i class="fa-solid fa-snowflake"></i>
+      </div>
+
+      <h3 class="cert-title">
+        Snowflake SnowPro Core
+      </h3>
+
+      <div class="cert-org">
+        Snowflake
+      </div>
+
+      <p class="cert-desc">
+        Expertise in Snowflake architecture, data loading, security,
+        performance optimization and administration.
+      </p>
+    </div>
+
+    <div class="cert-card fade-in">
+      <div class="cert-icon">
+        <i class="fa-solid fa-database"></i>
+      </div>
+
+      <h3 class="cert-title">
+        Oracle Database Professional
+      </h3>
+
+      <div class="cert-org">
+        Oracle
+      </div>
+
+      <p class="cert-desc">
+        Advanced knowledge of Oracle SQL, PL/SQL, performance tuning,
+        database design and administration.
+      </p>
+    </div>
+
+    <div class="cert-card fade-in">
+      <div class="cert-icon">
+        <i class="fa-solid fa-gears"></i>
+      </div>
+
+      <h3 class="cert-title">
+        dbt Fundamentals
+      </h3>
+
+      <div class="cert-org">
+        dbt Labs
+      </div>
+
+      <p class="cert-desc">
+        Data transformation, testing, documentation,
+        analytics engineering and modern ELT workflows.
+      </p>
+    </div>
+
+    <div class="cert-card fade-in">
+      <div class="cert-icon">
+        <i class="fa-brands fa-aws"></i>
+      </div>
+
+      <h3 class="cert-title">
+        AWS Cloud Practitioner
+      </h3>
+
+      <div class="cert-org">
+        Amazon Web Services
+      </div>
+
+      <p class="cert-desc">
+        Cloud fundamentals, storage, networking,
+        security and cloud-native architecture.
+      </p>
+    </div>
+
+    <div class="cert-card fade-in">
+      <div class="cert-icon">
+        <i class="fa-brands fa-microsoft"></i>
+      </div>
+
+      <h3 class="cert-title">
+        Azure administrator
+      </h3>
+
+      <div class="cert-org">
+        Microsoft Azure
+      </div>
+
+      <p class="cert-desc">
+        Cloud fundamentals, storage, networking,
+        security and cloud-native architecture.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- ============================================================
+       PROJECTS SECTION
+       ============================================================ -->
+  <section id="projects">
+    <span class="section-label">Projects</span>
+    <h2 class="section-title">Selected work</h2>
+    <p class="projects-intro">
+      A selection of data engineering project demonstrates an end-to-end modern data stack pipelines. Simulate data generation, stream changes in real time, transform them into analytics-ready models, and visualize insights.
+      Click <strong>View Project</strong> to explore each one.
+    </p>
+
+    <div class="projects-grid">
+
+      <!-- ============================================================
+           PROJECT CARD START — copy from here to PROJECT CARD END
+           to add another project. Paste the copy right after the </article>
+           ============================================================ -->
+      <article class="project-card fade-in">
+
+      <!-- PROJECT IMAGE
+     HOW TO ADD A SCREENSHOT:
+       1. Save your screenshot as e.g. images/project1.png
+       2. Delete the <div class="card-img-placeholder"> block.
+       3. Uncomment and update the <img> tag below.
+-->
+ 
+
+  <div class="card-img-placeholder">
+          <i class="fa-solid fa-database"></i>
+          <span>Add screenshot: images/project1.png</span>
+        </div>
+        <!-- <img class="card-img" src="images/project2.png" alt="Customer Analysis screenshot" /> -->
+
+
+<div class="card-body">
+  <!-- CHANGE: Replace tags with the tools you used -->
+  <div class="card-tags">
+    <span class="card-tag">ELT/ETL</span>
+  </div>
+  <!-- CHANGE: Replace with your project title -->
+  <h3 class="card-title"> Modern Banking Data Platform</h3>
+  <!-- CHANGE: Replace with your project description (2–3 sentences) -->
+  <p class="card-desc">
+    A modern banking data platform that transforms customer, account, and transaction data into real-time business insights using Snowflake, Kafka, dbt, Airflow, and CI/CD best practices.
+  </p>
+  <!-- CHANGE: Replace href="#" with the real link to your project
+       (e.g. a GitHub repo, a published report, or a live dashboard URL) -->
+  <a href="https://github.com/nandbabai/data-engineering-end-to-end" class="card-link" target="_blank">
+    View Project <i class="fa-solid fa-arrow-right"></i>
+  </a>
+</div>
+</article>
+<!-- PROJECT CARD END -->
+
+
+
+    </div><!-- /projects-grid -->
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+       ============================================================ -->
+  <section id="contact">
+    <span class="section-label">Contact</span>
+    <h2 class="section-title">Let's work together</h2>
+
+    <div class="contact-grid">
+
+      <div class="contact-item fade-in">
+        <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="contact-info">
+          <div class="label">Email</div>
+          <div class="value">
+            <a href="mailto:nandkumarsh222@gmail.com">nandkumarsh222@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item fade-in" style="animation-delay:.1s">
+        <div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+        <div class="contact-info">
+          <div class="label">LinkedIn</div>
+          <div class="value">
+            <a href="https://www.linkedin.com/in/nandkumar-sahu/" target="_blank">
+              linkedin.com/in/nandkumar-sahu
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item fade-in" style="animation-delay:.2s">
+        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="contact-info">
+          <div class="label">Location</div>
+          <div class="value">Oslo, Norway</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  
+  
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    &copy; 2026 <span>Nand Kumar Sahu</span>. All rights reserved.
+  </footer>
+
+</div><!-- /wrapper -->
+
+<!-- ============================================================
+     JAVASCRIPT — handles mobile sidebar, scroll animations,
+     and active nav highlighting. No changes needed here.
+     ============================================================ -->
+<script>
+  // ── Mobile sidebar toggle ──────────────────────────────────
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('overlay');
+  const menuBtn  = document.getElementById('menu-toggle');
+
+  function openSidebar()  { sidebar.classList.add('open');    overlay.classList.add('visible'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }
+
+  menuBtn.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close sidebar when a nav link is clicked on mobile
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', closeSidebar);
+  });
+
+  // ── Scroll-triggered fade-in animations ───────────────────
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // ── Active nav link on scroll ─────────────────────────────
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function setActive() {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', setActive);
+</script>
+
+</body>
+</html>
